@@ -22,6 +22,10 @@ de clases de _APIs_ en comun con los microservicios de _QDrant_, _BERTopic_ y _O
 
 * Para mas detalles, vease el archivo: ```requirements.txt```
 
+Estas nuevas librerias tambien aseguran mayor rendimiento para operaciones complejas de
+datos ya que todas las operaciones estan optimizadas por _Pandas_ y _NumPy_, ademas de
+ser realizadas en memoria en vez de disco duro como en _MySQL_ / _MariaDB_.
+
 ## 🐍 Ejecucion
 
 Antes de ejecutar cualquier cosa, primero instalar los requisitos en ```requirements.txt```.
