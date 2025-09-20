@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 from typing import Optional
 
-# Modelo que representa la idea para un proyecto
+"""
+Clase que representa la idea para un proyecto
+"""
 class Idea(BaseModel):
     Usuario: Optional[int] = None
     Campo: str

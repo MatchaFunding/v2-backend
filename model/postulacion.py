@@ -1,7 +1,10 @@
 from pydantic import BaseModel
 from typing import Optional
 
-# Modelo de las postulaciones
+"""
+Clase que representa las postulaciones de un proyecto a un fondo
+https://registros19862.gob.cl/
+"""
 class Postulacion(BaseModel):
     Beneficiario: Optional[int]
     Proyecto: Optional[int]

@@ -1,7 +1,10 @@
 from pydantic import BaseModel
 from typing import Optional
 
-# Modelo de los proyectos
+"""
+Clase que representa las postulaciones de un proyecto a un fondo
+https://registros19862.gob.cl/
+"""
 class Proyecto(BaseModel):
     Beneficiario: Optional[int] = None
     Problema: Optional[str] = None
