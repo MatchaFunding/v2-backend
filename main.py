@@ -127,6 +127,7 @@ def VerOrganizacion(usuario):
     id_miembros = id_miembros["Persona"].to_numpy()
     miembros = app.personas.iloc[id_miembros]
     miembros = miembros.to_dict('records')
+    # Se muestran todos los assets de la organizacion en formato JSON
     organizacion = {
             "Usuario": usuario,
             "Beneficiario": beneficiario,
