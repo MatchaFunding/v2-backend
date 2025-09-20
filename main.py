@@ -1,6 +1,4 @@
 from sqlalchemy import create_engine
-from pydantic import BaseModel
-from typing import Optional
 from datetime import datetime
 from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,87 +6,16 @@ import pandas as pd
 import sys
 import os
 
-# Modelo de los sexos
-class Sexo(BaseModel):
-    Nombre: str
-    Codigo: str
-
-# Modelo de los usuarios
-class Usuario(BaseModel):
-    Persona: Optional[int] = None
-    NombreDeUsuario: str
-    Contrasena: str
-    Correo: str
-
-# Modelo de las personas
-class Persona(BaseModel):
-    Apellido: Optional[str] = None
-    Ocupacion: Optional[str] = None
-    Correo: Optional[str] = None
-    Telefono: Optional[str] = None
-    FechaDeNacimiento: str
-    Nombre: str
-    Sexo: str
-    RUT: str
-
-# Modelo de los beneficiarios
-class Beneficiario(BaseModel):
-    Mision: Optional[str] = None
-    Vision: Optional[str] = None
-    Valores: Optional[str] = None
-    Nombre: str
-    FechaDeCreacion: str
-    RegionDeCreacion: str
-    Direccion: str
-    TipoDePersona: str
-    TipoDeEmpresa: str
-    Perfil: str
-    RUTdeEmpresa: str
-    RUTdeRepresentante: str
-
-# Modelo de los proyectos
-class Proyecto(BaseModel):
-    Beneficiario: Optional[int] = None
-    Problema: Optional[str] = None
-    Publico: Optional[str] = None
-    Innovacion: Optional[str] = None
-    Proposito: Optional[str] = None
-    ObjetivoGeneral: Optional[str] = None
-    ObjetivoEspecifico: Optional[str] = None
-    ResultadoEsperado: Optional[str] = None
-    Titulo: str
-    Descripcion: str
-    DuracionEnMesesMinimo: int
-    DuracionEnMesesMaximo: int
-    Alcance: str
-    Area: str
-
-# Modelo de las postulaciones
-class Postulacion(BaseModel):
-    Beneficiario: Optional[int]
-    Proyecto: Optional[int]
-    Instrumento: Optional[int]
-    FechaDePostulacion: Optional[int]
-    FechaDeResultado: Optional[int]
-    Resultado: str
-    MontoObtenido: int
-    Detalle: str
-
-# Modelo que representa la idea para un proyecto
-class Idea(BaseModel):
-    Usuario: Optional[int] = None
-    Campo: str
-    Problema: str
-    Publico: str
-    Innovacion: str
-    Oculta: bool
-    FechaDeCreacion: str
-    UltimaFechaDeModificacion: str
-
-# Modelo que representa la ideas propuestas por la IA
-class Propuesta(BaseModel):
-    Idea: Optional[int] = None
-    Resumen: str
+# Importa todos los modelos
+from model.sexo import Sexo
+from model.persona import Persona
+from model.beneficiario import Beneficiario
+from model.postulacion import Postulacion
+from model.propuesta import Propuesta
+from model.proyecto import Proyecto
+from model.registro import Registro
+from model.usuario import Usuario
+from model.idea import Idea
 
 # Modelo que representa la organizacion completa
 class Organizacion(BaseModel):
@@ -99,12 +26,6 @@ class Organizacion(BaseModel):
     Miembros: list[Persona]
     Ideas: list[Idea]
     Propuestas: list[Propuesta]
-
-# Modelo que representa los datos de un usuario recien registrado
-class Registro(BaseModel):
-    Usuario: Usuario
-    Persona: Persona
-    Beneficiario: Beneficiario
 
 # Obtiene los datos completos de la empresa en base al id del representante
 def VerOrganizacion(usuario):

@@ -39,7 +39,7 @@ Hecho esto, seguir alguno de los dos pasos a continuacion dependiendo de su sist
 Para correr el microservicio desde Linux, basta con ejecutar el siguiente comando:
 
 ```
-./start.sh
+./run.sh
 ```
 
 ### Windows
