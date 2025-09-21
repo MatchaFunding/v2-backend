@@ -7,26 +7,49 @@ import pandas as pd
 import sys
 import os
 
-from model.todos import * # Importa todos los modelos
+# Importa todos los modelos
+from model.todos import * 
 
-# Se conecta a la base de datos para luego cargar los datos en memoria
-db_connection_str = os.environ['MATCHA_CONF']
-db_connection = create_engine(db_connection_str)
-
+# Carga cada una de las tablas en dataframes con para optimizar las lecturas y escrituras
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Mover las variables globales aqui: https://stackoverflow.com/questions/76322463/how-to-initialize-a-global-object-or-variable-and-reuse-it-in-every-fastapi-endp/76322910#76322910
+    # Se conecta a la base de datos para luego cargar los datos en memoria
+    db_connection_str = os.environ['MATCHA_CONF']
+    db_connection = create_engine(db_connection_str)
+    # Instrumentos
+    app.instrumentos = pd.read_sql('SELECT * FROM VerTodosLosInstrumentos', con=db_connection)
+    app.instrumentos_json = app.instrumentos.to_dict('records')
+    # Beneficiarios
+    app.beneficiarios = pd.read_sql('SELECT * FROM VerTodosLosBeneficiarios', con=db_connection)
+    app.beneficiarios_json = app.beneficiarios.to_dict('records')
+    # Proyectos
+    app.proyectos = pd.read_sql('SELECT * FROM VerTodosLosProyectos', con=db_connection)
+    app.proyectos_json = app.proyectos.to_dict('records')
+    # Postulaciones
+    app.postulaciones = pd.read_sql('SELECT * FROM VerTodasLasPostulaciones', con=db_connection)
+    app.postulaciones_json = app.postulaciones.to_dict('records')
+    # Ideas
+    app.ideas = pd.read_sql('SELECT * FROM VerTodasLasIdeas', con=db_connection)
+    app.ideas_json = app.ideas.to_dict('records')A
+    # Personas
+    app.personas = pd.read_sql('SELECT * FROM VerTodasLasPersonas', con=db_connection)
+    app.personas_json = app.personas.to_dict('records')
+    # Usuarios
+    app.usuarios = pd.read_sql('SELECT * FROM VerTodosLosUsuarios', con=db_connection)
+    app.usuarios_json = app.usuarios.to_dict('records')
+    # Sexos
+    app.sexos = pd.read_sql('SELECT * FROM VerSexos', con=db_connection)
+    app.sexos_json = app.sexos.to_dict('records')
+    # Miembros
+    app.miembros = pd.read_sql('SELECT * FROM VerMiembros', con=db_connection)
+    app.miembros_json = app.miembros.to_dict('records')
     yield
 
 # Inicializa el servidor de FastAPI
 app = FastAPI(title="MatchaFunding - API del BackEnd", lifespan=lifespan)
 
 # Permite conectarse remotamente a la API
-origins = [
-    "http://localhost",
-    "http://localhost:8080",
-    "*"
-]
+origins = ["http://localhost","http://localhost:8080","*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -35,33 +58,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Carga cada una de las tablas en dataframes con para optimizar las lecturas y escrituras
-app.instrumentos = pd.read_sql('SELECT * FROM VerTodosLosInstrumentos', con=db_connection)
-app.instrumentos_json = app.instrumentos.to_dict('records')
-
-app.beneficiarios = pd.read_sql('SELECT * FROM VerTodosLosBeneficiarios', con=db_connection)
-app.beneficiarios_json = app.beneficiarios.to_dict('records')
-
-app.proyectos = pd.read_sql('SELECT * FROM VerTodosLosProyectos', con=db_connection)
-app.proyectos_json = app.proyectos.to_dict('records')
-
-app.postulaciones = pd.read_sql('SELECT * FROM VerTodasLasPostulaciones', con=db_connection)
-app.postulaciones_json = app.postulaciones.to_dict('records')
-
-app.ideas = pd.read_sql('SELECT * FROM VerTodasLasIdeas', con=db_connection)
-app.ideas_json = app.ideas.to_dict('records')
-
-app.personas = pd.read_sql('SELECT * FROM VerTodasLasPersonas', con=db_connection)
-app.personas_json = app.personas.to_dict('records')
-
-app.usuarios = pd.read_sql('SELECT * FROM VerTodosLosUsuarios', con=db_connection)
-app.usuarios_json = app.usuarios.to_dict('records')
-
-app.sexos = pd.read_sql('SELECT * FROM VerSexos', con=db_connection)
-app.sexos_json = app.sexos.to_dict('records')
-
-app.miembros = pd.read_sql('SELECT * FROM VerMiembros', con=db_connection)
-app.miembros_json = app.miembros.to_dict('records')
 
 # Obtiene los datos completos de la empresa en base al id del representante
 def VerOrganizacion(usuario):
