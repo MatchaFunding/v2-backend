@@ -10,7 +10,7 @@ import os
 # Importa todos los modelos
 from model.todos import * 
 
-# Carga cada una de las tablas en dataframes con para optimizar las lecturas y escrituras
+# Carga cada una de las tablas en dataframes para optimizar las lecturas y escrituras
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Se conecta a la base de datos para luego cargar los datos en memoria
