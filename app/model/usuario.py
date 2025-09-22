@@ -21,6 +21,13 @@ def CrearNuevoUsuario(datos_de_usuario, id_persona, app):
     app.usuarios_json = app.usuarios.to_dict('records')
     return usuario, id_usuario
 
+# Revisa en los datos si el correo esta asociado con una cuenta
+def ExisteUsuarioConCorreo(correo, app)
+    usuarios = app.usuarios.loc[(app.usuarios["Correo"] == correo)]
+    if usuarios.shape[0] == 0:
+        return False
+    return True
+
 # Funcion que verifica si el usuario existe en bazse a sus credenciales
 def BuscarUsuarioPorCredenciales(credenciales, app):
     # Busca al usuario por nombre/correo o contrasena
