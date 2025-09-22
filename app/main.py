@@ -135,8 +135,8 @@ async def VerTodosLosUsuarios():
 
 # Obtiene un usuario especifico por su identificador
 @app.get("/usuario/{id}")
-async def ObtenerUsuario(id):
-    return app.usuarios_json[int(id)]
+async def ObtenerUsuario(id: int):
+    return app.usuarios_json[id]
 
 # Muestra todos los miembros en el sistema registradas
 @app.get("/miembro")
@@ -145,17 +145,17 @@ async def VerMiembros():
 
 # Muestra todos los sexos validos para los formularios
 @app.get("/sexo")
-async def VerSexos(request: Request):
+async def VerSexos():
     return app.sexos_json
 
 # Permite el detalle de un sexo especifico
 @app.get("/sexo/{id}")
-async def VerSexo(request: Request, id):
-    return app.sexos_json[int(id)]
+async def VerSexo(id: int):
+    return app.sexos_json[id]
 
 # Permite agregar un sexo nuevo al sistema
 @app.post("/sexo")
-async def CrearSexo(request: Request, sexo: Sexo):
+async def CrearSexo(sexo: Sexo):
     app.sexos.loc[len(app.sexos)] = dict(sexo)
     app.sexos_json = app.sexos.to_dict('records')
     return dict(sexo)
