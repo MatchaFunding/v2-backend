@@ -17,32 +17,32 @@ async def lifespan(app: FastAPI):
     db_connection_str = os.environ['MATCHA_CONF']
     db_connection = create_engine(db_connection_str)
     # Instrumentos
-    app.instrumentos = pd.read_sql('SELECT * FROM VerTodosLosInstrumentos', con=db_connection)
-    app.instrumentos_json = app.instrumentos.to_dict('records')
+    app.state.instrumentos = pd.read_sql('SELECT * FROM VerTodosLosInstrumentos', con=db_connection)
+    app.state.instrumentos_json = app.state.instrumentos.to_dict('records')
     # Beneficiarios
-    app.beneficiarios = pd.read_sql('SELECT * FROM VerTodosLosBeneficiarios', con=db_connection)
-    app.beneficiarios_json = app.beneficiarios.to_dict('records')
+    app.state.beneficiarios = pd.read_sql('SELECT * FROM VerTodosLosBeneficiarios', con=db_connection)
+    app.state.beneficiarios_json = app.state.beneficiarios.to_dict('records')
     # Proyectos
-    app.proyectos = pd.read_sql('SELECT * FROM VerTodosLosProyectos', con=db_connection)
-    app.proyectos_json = app.proyectos.to_dict('records')
+    app.state.proyectos = pd.read_sql('SELECT * FROM VerTodosLosProyectos', con=db_connection)
+    app.state.proyectos_json = app.state.proyectos.to_dict('records')
     # Postulaciones
-    app.postulaciones = pd.read_sql('SELECT * FROM VerTodasLasPostulaciones', con=db_connection)
-    app.postulaciones_json = app.postulaciones.to_dict('records')
+    app.state.postulaciones = pd.read_sql('SELECT * FROM VerTodasLasPostulaciones', con=db_connection)
+    app.state.postulaciones_json = app.state.postulaciones.to_dict('records')
     # Ideas
-    app.ideas = pd.read_sql('SELECT * FROM VerTodasLasIdeas', con=db_connection)
-    app.ideas_json = app.ideas.to_dict('records')A
+    app.state.ideas = pd.read_sql('SELECT * FROM VerTodasLasIdeas', con=db_connection)
+    app.state.ideas_json = app.state.ideas.to_dict('records')
     # Personas
-    app.personas = pd.read_sql('SELECT * FROM VerTodasLasPersonas', con=db_connection)
-    app.personas_json = app.personas.to_dict('records')
+    app.state.personas = pd.read_sql('SELECT * FROM VerTodasLasPersonas', con=db_connection)
+    app.state.personas_json = app.state.personas.to_dict('records')
     # Usuarios
-    app.usuarios = pd.read_sql('SELECT * FROM VerTodosLosUsuarios', con=db_connection)
-    app.usuarios_json = app.usuarios.to_dict('records')
+    app.state.usuarios = pd.read_sql('SELECT * FROM VerTodosLosUsuarios', con=db_connection)
+    app.state.usuarios_json = app.state.usuarios.to_dict('records')
     # Sexos
-    app.sexos = pd.read_sql('SELECT * FROM VerSexos', con=db_connection)
-    app.sexos_json = app.sexos.to_dict('records')
+    app.state.sexos = pd.read_sql('SELECT * FROM VerSexos', con=db_connection)
+    app.state.sexos_json = app.state.sexos.to_dict('records')
     # Miembros
-    app.miembros = pd.read_sql('SELECT * FROM VerMiembros', con=db_connection)
-    app.miembros_json = app.miembros.to_dict('records')
+    app.state.miembros = pd.read_sql('SELECT * FROM VerMiembros', con=db_connection)
+    app.state.miembros_json = app.state.miembros.to_dict('records')
     yield
 
 # Inicializa el servidor de FastAPI
