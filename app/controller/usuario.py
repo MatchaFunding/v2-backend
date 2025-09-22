@@ -1,5 +1,6 @@
 from fastapi import Request, APIRouter
 from model.todos import * 
+from view.usuario import * 
 
 # Maneja las rutas relacionadas a los sexos
 router = APIRouter(prefix="/usuario", tags=['usuario'])
@@ -20,7 +21,7 @@ async def AutenticarUsuario(credenciales: Usuario, request: Request):
     usuario = BuscarUsuarioPorCredenciales(credenciales, request.app)
     if not EsValidoElUsuario(usuario):
         return {"message": "Credenciales incorrectas!"}
-    return VerOrganizacion(usuario, request.app)
+    return VerEmpresaDeUsuario(usuario, request.app)
 
 # Permite actualizar los datos de la organizacion de un usuario concreto
 # (proyectos, miembros, empresa, etc.).
@@ -32,5 +33,5 @@ async def ModificarUsuario(organizacion: Organizacion, request: Request):
     usuario = BuscarUsuarioPorCredenciales(credenciales, request.app)
     if not EsValidoElUsuario(usuario):
         return {"message": "Credenciales incorrectas!"}
-    return VerOrganizacion(usuario, request.app)
+    return VerEmpresaDeUsuario(usuario, request.app)
     # TODO: crear funcion nueva que modifique los datos del usuario
