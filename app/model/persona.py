@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+import pandas as pd
 
 """
 Clase que representa a una persona natural, la cual puede ser miembro de una 
@@ -18,3 +19,12 @@ class Persona(BaseModel):
     Nombre: str
     Sexo: str
     RUT: str
+
+# Crea una nueva persona en el sistema en base a los datos
+# Devuelve la persona recien creada y su identificador
+def CrearNuevaPersona(datos_de_persona, app):
+    id_persona = len(app.personas)
+    persona = dict(datos_de_persona)
+    app.personas.loc[id_persona] = persona
+    app.personas_json = app.personas.to_dict('records')
+    return persona, id_persona

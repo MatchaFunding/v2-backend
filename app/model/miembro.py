@@ -1,8 +1,19 @@
 from pydantic import BaseModel
 from typing import Optional
-from .database import db_connection
 import pandas as pd
 
-# Lee todos los miembros y los guarda en un dataframe
-miembros = pd.read_sql('SELECT * FROM VerMiembros', con=db_connection)
-miembros_json = miembros.to_dict('records')
+class Miembro(BaseModel):
+    Persona: int
+    Beneficiario: int
+
+# Crea un nuevo miembro en base a los identificadores de la
+# persona y beneficiario del cual esta es parte
+def CrearMiembroDesdeIDs(id_persona, id_beneficiario, app):
+    miembro = {
+        "Persona": id_persona, 
+        "Beneficiario": id_beneficiario
+    }
+    id_miembro = len(app.miembros)
+    app.miembros.loc[id_miembro] = miembro
+    app.miembros_json = app.miembros.to_dict('records')
+    return miembro, id_miembro

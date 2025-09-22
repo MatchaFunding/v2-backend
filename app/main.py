@@ -8,12 +8,12 @@ import sys
 import os
 
 # Importa todos los modelos
-from model.todos import * 
+from model.todos_los_modelos import * 
 
 # Carga cada una de las tablas en dataframes para optimizar las lecturas y escrituras
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Se conecta a la base de datos para luego cargar los datos en memoria
+    # Se conecta a la base de datos para luego cargar las tablas en memoria
     db_connection_str = os.environ['MATCHA_CONF']
     db_connection = create_engine(db_connection_str)
     # Instrumentos
@@ -58,41 +58,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# Obtiene los datos completos de la empresa en base al id del representante
-def VerOrganizacion(usuario):
-    # Primero obtiene el identificador de la persona
-    id_persona = usuario.to_dict('records')[0]["Persona"]
-    # Se omite la el campo id por temas de seguridad
-    usuario = usuario.drop(['Persona'], axis=1).to_dict('records')[0]
-    # La persona del usuario es el representante de la organizacion
-    representante = app.miembros.loc[app.miembros["Persona"] == id_persona]
-    # Con lo anterior, se obtienen los datos del beneficiario
-    id_beneficiario = representante.to_dict('records')[0]["Beneficiario"]
-    beneficiario = app.beneficiarios_json[id_beneficiario]
-    # Con el identificador del beneficiario se obtiene el resto de los objetos
-    proyectos = app.proyectos.loc[app.proyectos["Beneficiario"] == id_beneficiario]
-    proyectos = proyectos.to_dict('records')
-    postulaciones = app.postulaciones.loc[app.postulaciones["Beneficiario"] == id_beneficiario]
-    postulaciones = postulaciones.to_dict('records')
-    # Muestra los miembros con el modelo de persona
-    id_miembros = app.miembros.loc[app.miembros["Beneficiario"] == id_beneficiario]
-    id_miembros = id_miembros["Persona"].to_numpy()
-    miembros = app.personas.iloc[id_miembros]
-    miembros = miembros.to_dict('records')
-    # Se muestran todos los assets de la organizacion en formato JSON
-    organizacion = {
-            "Usuario": usuario,
-            "Beneficiario": beneficiario,
-            "Proyectos": proyectos,
-            "Postulaciones": postulaciones,
-            "Representante": miembros[0],
-            "Miembros": miembros[1:],
-            "Ideas": [],
-            "Propuestas": []
-    }
-    return organizacion
-
 # Para ver el estado de el servidor
 @app.get("/")
 def root():
@@ -115,8 +80,8 @@ async def VerTodosLosBeneficiarios():
 
 # Muestra todos los beneficiarios vigentes e historicos
 @app.get("/beneficiario/{id}")
-async def ObtenerBeneficiario(id):
-    return app.beneficiarios_json[int(id)]
+async def ObtenerBeneficiario(id: int):
+    return app.beneficiarios_json[id]
 
 # Muestra todos los proyectos vigentes e historicos
 @app.get("/proyecto")
@@ -163,47 +128,20 @@ async def CrearSexo(sexo: Sexo):
 # Crea un usuario a partir de un nombre, correo y contrasena
 @app.post("/usuario/registrar")
 async def RegistrarUsuario(datos: Registro):
-    # Primero crea la persona para crear los otros objetos despues
-    id_persona = len(app.personas) # ID que tendra la persona
-    persona = dict(datos.Persona)
-    app.personas.loc[id_persona] = persona
-    app.personas_json = app.personas.to_dict('records')
-    # Al crear la persona, el usuario adquiere su ID como FK
-    usuario = dict(datos.Usuario)
-    usuario["Persona"] = id_persona
-    app.usuarios.loc[len(app.usuarios)] = usuario
-    app.usuarios_json = app.usuarios.to_dict('records')
-    # Luego se crea el beneficiario
-    id_beneficiario = len(app.beneficiarios) # ID que tendra el beneficiario
-    beneficiario = dict(datos.Beneficiario)
-    app.beneficiarios.loc[len(app.beneficiarios)] = beneficiario
-    app.beneficiarios_json = app.beneficiarios.to_dict('records')
-    # Finalmente se crea al usuario como miembro
-    miembro = {"Persona": id_persona, "Beneficiario": id_beneficiario}
-    app.miembros.loc[len(app.miembros)] = miembro
-    app.miembros_json = app.miembros.to_dict('records')
-    # La funcion devuelve la organizacion completa creada del usuario
-    organizacion = {
-            "Usuario": usuario,
-            "Beneficiario": beneficiario
-    }
-    return organizacion
+    persona, id_persona = CrearNuevaPersona(datos.Persona, app)
+    usuario, _ = CrearNuevoUsuario(datos.Usuario, id_persona, app)
+    beneficiario, id_beneficiario = CrearNuevoBeneficiario(datos.Beneficiario, app)
+    miembro, _ = CrearMiembroDesdeIDs(id_persona, id_beneficiario, app)
+    return {"message": "Usuario registrado exitosamente!"}
 
 # Valida los datos del usuario y devuelve la organizacion completa
 # Tambien sirve para actualizar los datos del usuario de forma segura
 @app.post("/usuario/autenticar")
 async def AutenticarUsuario(credenciales: Usuario):
-    usuario_encontrado = app.usuarios.loc[
-        (app.usuarios["NombreDeUsuario"] == credenciales.NombreDeUsuario) |
-        (app.usuarios["Correo"] == credenciales.Correo)
-    ]
-    usuario_valido = usuario_encontrado.loc[
-        usuario_encontrado["Contrasena"] == credenciales.Contrasena
-    ]
-    # Si la query resulta en cero filas, las credenciaales eran invalidas
-    if usuario_valido.shape[0] == 0:
+    usuario = BuscarUsuarioPorCredenciales(credenciales, app)
+    if not EsValidoElUsuario(usuario):
         return {"message": "Credenciales incorrectas!"}
-    return VerOrganizacion(usuario_valido)
+    return VerOrganizacion(usuario, app)
 
 # Permite actualizar los datos de la organizacion de un usuario concreto
 # (proyectos, miembros, empresa, etc.).
@@ -211,16 +149,9 @@ async def AutenticarUsuario(credenciales: Usuario):
 # hacer la modificacion de forma segura.
 @app.post("/usuario/modificar")
 async def ModificarUsuario(organizacion: Organizacion):
-    usuario = organizacion.Usuario
-    usuario_encontrado = app.usuarios.loc[
-        (app.usuarios["NombreDeUsuario"] == usuario.NombreDeUsuario) |
-        (app.usuarios["Correo"] == usuario.Correo)
-    ]
-    usuario_valido = usuario_encontrado.loc[
-        usuario_encontrado["Contrasena"] == usuario.Contrasena
-    ]
-    # Si la query resulta en cero filas, las credenciaales eran invalidas
-    if usuario_valido.shape[0] == 0:
+    credenciales = organizacion.Usuario
+    usuario = BuscarUsuarioPorCredenciales(credenciales, app)
+    if not EsValidoElUsuario(usuario):
         return {"message": "Credenciales incorrectas!"}
+    return VerOrganizacion(usuario, app)
     # TODO: crear funcion nueva que modifique los datos del usuario
-    return VerOrganizacion(usuario_valido)
