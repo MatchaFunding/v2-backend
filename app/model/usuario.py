@@ -22,7 +22,7 @@ def CrearNuevoUsuario(datos_de_usuario, id_persona, app):
     return usuario, id_usuario
 
 # Revisa en los datos si el correo esta asociado con una cuenta
-def ExisteUsuarioConCorreo(correo, app)
+def ExisteUsuarioConCorreo(correo, app):
     usuarios = app.usuarios.loc[(app.usuarios["Correo"] == correo)]
     if usuarios.shape[0] == 0:
         return False
