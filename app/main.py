@@ -67,7 +67,7 @@ app.include_router(sexo.router)
 app.include_router(usuario.router)
 
 # Permite conectarse remotamente a la API
-origins = ["http://localhost","http://localhost:8080","*"]
+origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
