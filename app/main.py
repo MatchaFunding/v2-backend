@@ -9,6 +9,7 @@ import os
 
 # Importa todos los controladores
 from controller import beneficiario
+from controller import financiador
 from controller import instrumento
 from controller import proyecto
 from controller import persona
@@ -48,6 +49,9 @@ async def lifespan(app: FastAPI):
     # Miembros
     app.miembros = pd.read_sql('SELECT * FROM VerMiembros', con=db_connection)
     app.miembros_json = app.miembros.to_dict('records')
+    # Financiadores
+    app.financiadores = pd.read_sql('SELECT * FROM VerTodosLosFinanciadores', con=db_connection)
+    app.financiadores_json = app.financiadores.to_dict('records')
     yield
 
 # Inicializa el servidor de FastAPI
@@ -55,6 +59,7 @@ app = FastAPI(title="MatchaFunding - API del BackEnd", lifespan=lifespan)
 
 # Agrega los controladores a la aplicacion
 app.include_router(beneficiario.router)
+app.include_router(financiador.router)
 app.include_router(instrumento.router)
 app.include_router(proyecto.router)
 app.include_router(persona.router)
