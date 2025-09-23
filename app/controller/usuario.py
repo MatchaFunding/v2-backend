@@ -11,7 +11,8 @@ async def RegistrarUsuario(datos: Registro, request: Request):
     persona, id_persona = CrearNuevaPersona(datos.Persona, request.app)
     usuario, _ = CrearNuevoUsuario(datos.Usuario, id_persona, request.app)
     beneficiario, id_beneficiario = CrearNuevoBeneficiario(datos.Beneficiario, request.app)
-    miembro, _ = CrearMiembroDesdeIDs(id_persona, id_beneficiario, request.app)
+    datos_de_miembro = {"Persona": id_persona, "Beneficiario": id_beneficiario}    
+    miembro, _ = CrearNuevoMiembro(datos_de_miembro, request.app)
     return {"message": "Usuario registrado exitosamente!"}
 
 # Valida los datos del usuario y devuelve la organizacion completa
@@ -21,7 +22,7 @@ async def AutenticarUsuario(credenciales: Usuario, request: Request):
     usuario = BuscarUsuarioPorCredenciales(credenciales, request.app)
     if not EsValidoElUsuario(usuario):
         return {"message": "Credenciales incorrectas!"}
-    return VerEmpresaDeUsuario(usuario, request.app)
+    return OrganizacionDeUsuario(usuario, request.app)
 
 # Permite actualizar los datos de la organizacion de un usuario concreto
 # (proyectos, miembros, empresa, etc.).
@@ -33,5 +34,5 @@ async def ModificarUsuario(organizacion: Organizacion, request: Request):
     usuario = BuscarUsuarioPorCredenciales(credenciales, request.app)
     if not EsValidoElUsuario(usuario):
         return {"message": "Credenciales incorrectas!"}
-    return VerEmpresaDeUsuario(usuario, request.app)
+    return OrganizacionDeUsuario(usuario, request.app)
     # TODO: crear funcion nueva que modifique los datos del usuario

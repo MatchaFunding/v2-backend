@@ -3,7 +3,7 @@ from model.todos import *
 import pandas as pd
 
 # Obtiene los datos completos de la empresa en base al id del representante
-def VerEmpresaDeUsuario(usuario, app):
+def OrganizacionDeUsuario(usuario, app):
     # Primero obtiene el identificador de la persona
     id_persona = usuario.to_dict('records')[0]["Persona"]
     # Luego busca al usuarioo, omitiendo el campo id por temas de seguridad
@@ -30,7 +30,6 @@ def VerEmpresaDeUsuario(usuario, app):
             "Beneficiario": beneficiario,
             "Proyectos": proyectos,
             "Postulaciones": postulaciones,
-            "Representante": representante,
             "Miembros": miembros,
             "Ideas": [],
             "Propuestas": []

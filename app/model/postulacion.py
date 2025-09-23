@@ -14,3 +14,9 @@ class Postulacion(BaseModel):
     Resultado: str
     MontoObtenido: int
     Detalle: str
+
+# Muestra las postulaciones de un ente beneficiario
+def PostulacionesDeBeneficiario(id: int, app):
+    postulaciones = app.postulaciones.loc[app.postulaciones["Beneficiario"] == id]
+    postulaciones = postulaciones.to_dict('records')
+    return postulaciones
