@@ -5,15 +5,9 @@
 Microservicio que maneja el flujo de datos duros, como las empresas, proyectos, personas,
 miembros y usuarios.
 
-La intencion de esta nueva implementacion nueva es adaptarse al nuevo modelo de datos y
-poder segregar el microservicio en dos fases: Usuarios y Core. _Usuarios_ refiere a la
-autenticacion, creacion de proyectos y manejo de personasl. Mientras que _Core_ es el
-manejo de datos masivos obtenidos a traves de _Web-Scraping_ e investigacion, el cual
-se usa para hacer los calculos con la IA y vectorizacion.
-
-Dicha separacion de servicios permite balancear las cargas de forma mas adecuada, ya que
-finalmente los datos de _Usuarios_ y _Core_ nunca interactuan entre si (a pesar de usar
-los mismos modelos).
+La intencion de esta nueva implementacion nueva es adaptarse al nuevo modelo de datos,
+procurar mejor rendimiento, uso de buenas practicas y mejor compatibilidad con la API
+de QDrant y BERTopic.
 
 ## 🐼 Tecnologia
 
