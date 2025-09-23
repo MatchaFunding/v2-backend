@@ -11,10 +11,10 @@ import os
 from controller import beneficiario
 from controller import financiador
 from controller import instrumento
-from controller import proyecto
 from controller import persona
-from controller import usuario
+from controller import proyecto
 from controller import sexo
+from controller import usuario
 
 # Carga cada una de las tablas en dataframes para optimizar las lecturas y escrituras
 @asynccontextmanager
@@ -61,10 +61,10 @@ app = FastAPI(title="MatchaFunding - API del BackEnd", lifespan=lifespan)
 app.include_router(beneficiario.router)
 app.include_router(financiador.router)
 app.include_router(instrumento.router)
-app.include_router(proyecto.router)
 app.include_router(persona.router)
-app.include_router(usuario.router)
+app.include_router(proyecto.router)
 app.include_router(sexo.router)
+app.include_router(usuario.router)
 
 # Permite conectarse remotamente a la API
 origins = ["http://localhost","http://localhost:8080","*"]
