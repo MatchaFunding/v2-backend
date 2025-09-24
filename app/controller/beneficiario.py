@@ -7,4 +7,3 @@ router = APIRouter(prefix="/beneficiario", tags=['beneficiario'])
 @router.get("")
 async def VerTodosLosBeneficiarios(request: Request):
     return TodosLosBeneficiarios(request.app)
-

@@ -16,7 +16,7 @@ def OrganizacionDeUsuario(usuario, app):
     beneficiario = app.beneficiarios_json[id_beneficiario]
     # Con el identificador del beneficiario se obtiene el resto de los objetos
     proyectos = app.proyectos.loc[app.proyectos["Beneficiario"] == id_beneficiario]
-    proyectos = proyectos.to_dict('records')
+    proyectos = proyectos.drop(['Beneficiario'], axis=1).to_dict('records')
     postulaciones = app.postulaciones.loc[app.postulaciones["Beneficiario"] == id_beneficiario]
     postulaciones = postulaciones.to_dict('records')
     # Muestra los miembros con el modelo de persona

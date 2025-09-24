@@ -11,9 +11,9 @@ class Postulacion(BaseModel):
     Instrumento: Optional[int]
     FechaDePostulacion: Optional[int]
     FechaDeResultado: Optional[int]
+    Detalle: Optional[str]
     Resultado: str
     MontoObtenido: int
-    Detalle: str
 
 # Muestra las postulaciones de un ente beneficiario
 def PostulacionesDeBeneficiario(id: int, app):

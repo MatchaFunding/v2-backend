@@ -9,7 +9,7 @@ async def RegistrarUsuario(datos: Registro, request: Request):
     persona, id_persona = CrearNuevaPersona(datos.Persona, request.app)
     usuario, _ = CrearNuevoUsuario(datos.Usuario, id_persona, request.app)
     beneficiario, id_beneficiario = CrearNuevoBeneficiario(datos.Beneficiario, request.app)
-    datos_de_miembro = {"Persona": id_persona, "Beneficiario": id_beneficiario}    
+    datos_de_miembro = {"Persona": id_persona, "Beneficiario": id_beneficiario}
     miembro, _ = CrearNuevoMiembro(datos_de_miembro, request.app)
     return {"message": "Usuario registrado exitosamente!"}
 
