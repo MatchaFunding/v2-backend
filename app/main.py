@@ -15,6 +15,10 @@ from controller import persona
 from controller import proyecto
 from controller import sexo
 from controller import usuario
+from controller import tipo_de_beneficio
+from controller import tipo_de_empresa
+from controller import tipo_de_perfil
+from controller import tipo_de_persona
 
 # Carga cada una de las tablas en dataframes para optimizar las lecturas y escrituras
 @asynccontextmanager
@@ -52,6 +56,11 @@ async def lifespan(app: FastAPI):
     # Financiadores
     app.financiadores = pd.read_sql('SELECT * FROM VerTodosLosFinanciadores', con=db_connection)
     app.financiadores_json = app.financiadores.to_dict('records')
+    # Tipos
+    app.tipos_de_beneficio = pd.read_sql('SELECT * FROM VerTiposDeBeneficio', con=db_connection).to_dict('records')
+    app.tipos_de_empresa = pd.read_sql('SELECT * FROM VerTiposDeEmpresa', con=db_connection).to_dict('records')
+    app.tipos_de_perfil = pd.read_sql('SELECT * FROM VerTiposDePerfil', con=db_connection).to_dict('records')
+    app.tipos_de_persona = pd.read_sql('SELECT * FROM VerTiposDePersona', con=db_connection).to_dict('records')
     yield
 
 # Inicializa el servidor de FastAPI
@@ -65,6 +74,10 @@ app.include_router(persona.router)
 app.include_router(proyecto.router)
 app.include_router(sexo.router)
 app.include_router(usuario.router)
+app.include_router(tipo_de_beneficio.router)
+app.include_router(tipo_de_empresa.router)
+app.include_router(tipo_de_perfil.router)
+app.include_router(tipo_de_persona.router)
 
 # Permite conectarse remotamente a la API
 origins = ["*"]
