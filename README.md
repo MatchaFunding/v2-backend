@@ -38,7 +38,18 @@ Para correr el microservicio desde Linux, basta con ejecutar el siguiente comand
 
 ### Windows
 
-Para correr el microservicio desde Windows 10/11, basta con ejecutar el siguiente comando:
+El Back-End nuevo hace uso del motor SQLAlchemy, el cual se usa para conectarse a la base de datos al ejecutar el microservicio.
+Dicho motor hace uso de un unico string para conectarse a MySQL / MariaDB. Por ende, para poder levantar el servicio basta con
+establecer la siguiente variable de entorno:
+
+```
+MATCHA_CONF="un_string_que_claramente_no_es_este"
+```
+
+**La llave real estara en el discord de MatchaFunding.**
+
+Luego, Para correr el microservicio desde Windows 10/11, basta con ejecutar el siguiente comando:
+
 ```
 uvicorn main:app --reload --host 127.0.0.1 --port 8080
 ```
