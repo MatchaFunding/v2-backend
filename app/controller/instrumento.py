@@ -2,7 +2,7 @@ from fastapi import Request, APIRouter
 from model.instrumento import * 
 from view.instrumento import * 
 
-router = APIRouter(prefix="/instrumento", tags=['instrumento'])
+router = APIRouter(prefix="/instrumentos", tags=['instrumentos'])
 
 @router.get("")
 async def VerTodosLosInstrumentos(request: Request):

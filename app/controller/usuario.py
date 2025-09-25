@@ -2,7 +2,7 @@ from fastapi import Request, APIRouter
 from model.todos import * 
 from view.usuario import * 
 
-router = APIRouter(prefix="/usuario", tags=['usuario'])
+router = APIRouter(prefix="/usuarios", tags=['usuarios'])
 
 # @router.post("/registrar")
 # async def RegistrarUsuario(datos: Registro, request: Request):

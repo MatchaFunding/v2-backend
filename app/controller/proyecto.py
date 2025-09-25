@@ -2,7 +2,7 @@ from fastapi import Request, APIRouter
 from model.proyecto import * 
 from view.proyecto import * 
 
-router = APIRouter(prefix="/proyecto", tags=['proyecto'])
+router = APIRouter(prefix="/proyectos", tags=['proyectos'])
 
 @router.get("")
 async def VerTodosLosProyectos(request: Request):
