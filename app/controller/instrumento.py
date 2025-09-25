@@ -8,10 +8,10 @@ router = APIRouter(prefix="/instrumentos", tags=['instrumentos'])
 async def VerTodosLosInstrumentos(request: Request):
     return TodosLosInstrumentos(request.app)
 
-@router.get("/vigente")
+@router.get("/vigentes")
 async def VerInstrumentosVigentes(request: Request):
     return InstrumentosVigentes(request.app)
 
-@router.get("/historico")
+@router.get("/historicos")
 async def VerInstrumentosHistoricos(request: Request):
     return InstrumentosHistoricos(request.app)
