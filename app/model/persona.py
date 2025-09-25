@@ -20,8 +20,6 @@ class Persona(BaseModel):
     Sexo: str
     RUT: str
 
-# Crea una nueva persona en el sistema en base a los datos
-# Devuelve la persona recien creada y su identificador
 def CrearNuevaPersona(datos_de_persona, app):
     id_persona = len(app.personas)
     persona = dict(datos_de_persona)

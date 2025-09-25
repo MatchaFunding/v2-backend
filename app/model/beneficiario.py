@@ -26,8 +26,6 @@ class Beneficiario(BaseModel):
     RUTdeEmpresa: str
     RUTdeRepresentante: str
 
-# Crea un nuevo beneficiario en el sistema er base a los datos
-# Devuelve al beneficiario recien creada y su identificador
 def CrearNuevoBeneficiario(datos_de_beneficiario, app):
     id_beneficiario = len(app.beneficiarios)
     beneficiario = dict(datos_de_beneficiario)

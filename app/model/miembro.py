@@ -6,8 +6,6 @@ class Miembro(BaseModel):
     Persona: int
     Beneficiario: int
 
-# Crea un nuevo miembro en base a los identificadores de la
-# persona y beneficiario del cual esta es parte
 def CrearNuevoMiembro(datos_de_miembro, app):
     id_miembro = len(app.miembros)
     miembro = dict(datos_de_miembro)

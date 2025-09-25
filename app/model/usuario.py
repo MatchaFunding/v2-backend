@@ -11,8 +11,6 @@ class Usuario(BaseModel):
     Contrasena: str
     Correo: str
 
-# Crea un nuevo usuario en el sistema en base a los datos
-# Devuelve al usuario recien creado y su identificador
 def CrearNuevoUsuario(datos_de_usuario, id_persona, app):
     id_usuario = len(app.usuarios)
     usuario = dict(datos_de_usuario)
@@ -21,14 +19,12 @@ def CrearNuevoUsuario(datos_de_usuario, id_persona, app):
     app.usuarios_json = app.usuarios.to_dict('records')
     return usuario, id_usuario
 
-# Revisa en los datos si el correo ya esta asociado con una cuenta
 def ExisteUsuarioConCorreo(correo, app):
     usuarios = app.usuarios.loc[(app.usuarios["Correo"] == correo)]
     if usuarios.shape[0] == 0:
         return False
     return True
 
-# Funcion que verifica si el usuario existe en base a sus credenciales
 def BuscarUsuarioPorCredenciales(credenciales, app):
     usuario = app.usuarios.loc[
         (app.usuarios["NombreDeUsuario"] == credenciales.NombreDeUsuario) |
@@ -37,7 +33,6 @@ def BuscarUsuarioPorCredenciales(credenciales, app):
     usuario = usuario.loc[usuario["Contrasena"] == credenciales.Contrasena]
     return usuario
 
-# Despues de buscar al usuario, corrobora si existe / es valido
 def EsValidoElUsuario(usuario):
     if usuario.shape[0] == 0:
         return False

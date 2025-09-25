@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from typing import Optional
-import pandas as pd
 
 """
 Clase que representa las entes financieras que ofrecen los fondos.
