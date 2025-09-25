@@ -7,3 +7,15 @@ router = APIRouter(prefix="/proyecto", tags=['proyecto'])
 @router.get("")
 async def VerTodosLosProyectos(request: Request):
     return TodosLosProyectos(request.app)
+
+@router.get("/adjudicado")
+async def VerProyectosAdjudicados(request: Request):
+    return ProyectosAdjudicados(request.app)
+
+@router.get("/rechazado")
+async def VerProyectosRechazados(request: Request):
+    return ProyectosRechazados(request.app)
+
+@router.get("/pendiente")
+async def VerProyectosPendientes(request: Request):
+    return ProyectosPendientes(request.app)

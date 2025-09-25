@@ -14,7 +14,6 @@ from controller import instrumento
 from controller import postulacion
 from controller import persona
 from controller import proyecto
-from controller import usuario
 from controller import tipo_de_beneficio
 from controller import tipo_de_empresa
 from controller import tipo_de_perfil
@@ -47,9 +46,6 @@ async def lifespan(app: FastAPI):
     # Personas
     app.personas = pd.read_sql('SELECT * FROM VerTodasLasPersonas', con=conexion)
     app.personas_json = app.personas.to_dict('records')
-    # Usuarios
-    app.usuarios = pd.read_sql('SELECT * FROM VerTodosLosUsuarios', con=conexion)
-    app.usuarios_json = app.usuarios.to_dict('records')
     # Miembros
     app.miembros = pd.read_sql('SELECT * FROM VerMiembros', con=conexion)
     app.miembros_json = app.miembros.to_dict('records')
@@ -76,7 +72,6 @@ app.include_router(instrumento.router)
 app.include_router(postulacion.router)
 app.include_router(persona.router)
 app.include_router(proyecto.router)
-app.include_router(usuario.router)
 app.include_router(tipo_de_beneficio.router)
 app.include_router(tipo_de_empresa.router)
 app.include_router(tipo_de_perfil.router)

@@ -7,3 +7,30 @@ def UnProyecto(id: int, app):
 
 def TodosLosProyectos(app):
     return app.proyectos_json
+
+def ProyectosAdjudicados(app):
+    adjudicados = app.postulaciones.loc[
+        app.postulaciones["Resultado"] == "Adjudicado"
+    ]
+    id_proyectos = adjudicados["Proyecto"].to_numpy() - 1
+    proyectos = app.proyectos.iloc[id_proyectos]
+    proyectos = proyectos.to_dict('records')
+    return proyectos
+
+def ProyectosRechazados(app):
+    rechaazados = app.postulaciones.loc[
+        app.postulaciones["Resultado"] == "Rechazado"
+    ]
+    id_proyectos = rechaazados["Proyecto"].to_numpy() - 1
+    proyectos = app.proyectos.iloc[id_proyectos]
+    proyectos = proyectos.to_dict('records')
+    return proyectos
+
+def ProyectosPendientes(app):
+    rechaazados = app.postulaciones.loc[
+        app.postulaciones["Resultado"] == "Pendiente"
+    ]
+    id_proyectos = rechaazados["Proyecto"].to_numpy() - 1
+    proyectos = app.proyectos.iloc[id_proyectos]
+    proyectos = proyectos.to_dict('records')
+    return proyectos

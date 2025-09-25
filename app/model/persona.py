@@ -19,10 +19,3 @@ class Persona(BaseModel):
     Nombre: str
     Sexo: str
     RUT: str
-
-def CrearNuevaPersona(datos_de_persona, app):
-    id_persona = len(app.personas)
-    persona = dict(datos_de_persona)
-    app.personas.loc[id_persona] = persona
-    app.personas_json = app.personas.to_dict('records')
-    return persona, id_persona

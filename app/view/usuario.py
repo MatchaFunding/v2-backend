@@ -11,6 +11,7 @@ def OrganizacionDeUsuario(usuario, app):
     # La persona del usuario es el representante de la organizacion
     representante = app.miembros.loc[app.miembros["Persona"] == id_persona]
     representante = representante.to_dict('records')
+    print(f"Representante: {representante}")
     # Con lo anterior, se obtienen los datos del beneficiario
     id_beneficiario = representante[0]["Beneficiario"]
     beneficiario = app.beneficiarios_json[id_beneficiario]

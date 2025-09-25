@@ -25,10 +25,3 @@ class Beneficiario(BaseModel):
     Perfil: str
     RUTdeEmpresa: str
     RUTdeRepresentante: str
-
-def CrearNuevoBeneficiario(datos_de_beneficiario, app):
-    id_beneficiario = len(app.beneficiarios)
-    beneficiario = dict(datos_de_beneficiario)
-    app.beneficiarios.loc[id_beneficiario] = beneficiario
-    app.beneficiarios_json = app.beneficiarios.to_dict('records')
-    return beneficiario, id_beneficiario
