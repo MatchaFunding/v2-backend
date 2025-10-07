@@ -1,6 +1,6 @@
 # 🍵 Backend-V2 de MatchaFunding
 
-## 🧮 Resumen
+## 🗂️ Resumen
 
 Microservicio que maneja el flujo de datos duros, como las empresas, proyectos, personas,
 miembros y usuarios.
@@ -9,47 +9,60 @@ La intencion de esta nueva implementacion nueva es adaptarse al nuevo modelo de 
 procurar mejor rendimiento, uso de buenas practicas y mejor compatibilidad con la API
 de QDrant y BERTopic.
 
-## 🐼 Tecnologia
+## 🔥 Tecnologia
 
-Esta nueva implementacion usa las librerias _Pandas_ y _FastAPI_, para facilitar el manejo
-de clases de _APIs_ en comun con los microservicios de _QDrant_, _BERTopic_ y _Ollama_.
+El Back-End ha sido re-escrito en _C_, utilizando _MySQL_, _Redis_, _libmicrohttpd_ y _cJSON_ dentro de su _stack_.
 
-* Para mas detalles, vease el archivo: ```requirements.txt```
+El servidor ahora corre bajo _libmicrohttpd_, un servidor nativo en C que se enfoca en traer funcionalidad moderna al entorno _UNIX_.
 
-Estas nuevas librerias tambien aseguran mayor rendimiento para operaciones complejas de
-datos ya que todas las operaciones estan optimizadas por _Pandas_ y _NumPy_, ademas de
-ser realizadas en memoria en vez de disco duro como en _MySQL_ / _MariaDB_.
+La base de datos sigue siendo _MySQL_, de esta forma los datos son compatibles con las iteraciones anteriores, ademas de ser la base de datos por excelencia.
+
+Ahora se agrega _Redis_ en el stack, lo cual remplaza a _Pandas_ para mantener los datos calientes en memoria RAM y asi optimizar el uso de recursos limitado.
+
+Finalmente, se usa _cJSON_ para parsear y formatear datos en _JSON_.
+
+## ✅ Requisitos
+
+Para lograr compilar y ejecutar el programa, se necesita tener un entorno _UNIX_ con las librerias necesarias.
+
+#### 🐧 Arch Linux
+
+Para Arch Linux (o en el servidor), se pueden instalar las dependencias a traves del siguiente comando:
+
+```
+pacman -S gcc mariadb libmicrohttpd redis cjson
+```
+
+*Nota*: Correr el comando anterior con _sudo_ o desde _root_
+
+#### 🪟 Windows
+
+La forma mas rapida de poder lograr correr el programa en Windows es a traves de _Windows Subsystem for Linux_. Se puede instalar Arch Linux para WSL a traves de los siguientes comandos:
+
+Primero, actualizar WSL
+```
+wsl --update
+```
+
+Luego, instalar Arch Linux para WSL
+```
+wsl --install archlinux
+```
+
+Listo! ahora seguir los pasos del inciso anterior para instalar las librerias utilizadas.
+
+Tutorial: https://wiki.archlinux.org/title/Install_Arch_Linux_on_WSL
 
 ## 🐍 Ejecucion
 
-Antes de ejecutar cualquier cosa, primero instalar los requisitos en ```requirements.txt```.
-
-Luego, corroborar de tener la ultima base de datos instalada: [https://github.com/MatchaFunding/bd](https://github.com/MatchaFunding/bd).
-
-Hecho esto, seguir alguno de los dos pasos a continuacion dependiendo de su sistema operativo.
-
-### Linux / Bash
-
-Para correr el microservicio desde Linux, basta con ejecutar el siguiente comando:
+Una vez se cumplan los requisitos necesarios, para compilar el proyecto hay que hacer el siguiente comando desde la raiz del repositorio:
 
 ```
-./run.sh
+make
 ```
 
-### Windows
-
-El Back-End nuevo hace uso del motor SQLAlchemy, el cual se usa para conectarse a la base de datos al ejecutar el microservicio.
-Dicho motor hace uso de un unico string para conectarse a MySQL / MariaDB. Por ende, para poder levantar el servicio basta con
-establecer la siguiente variable de entorno:
+Luego para ejecutar el programa, correr el siguiente comando como _root_ o mediante _sudo_:
 
 ```
-MATCHA_CONF="un_string_que_claramente_no_es_este"
-```
-
-**La llave real estara en el discord de MatchaFunding.**
-
-Luego, Para correr el microservicio desde Windows 10/11, basta con ejecutar el siguiente comando:
-
-```
-uvicorn main:app --reload --host 127.0.0.1 --port 8080
+./bin/out
 ```
