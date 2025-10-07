@@ -10,7 +10,7 @@ HTTP_response VerTodosLosInstrumentos(const char *url) {
 	char *cache = BuscarEnCache("instrumentos");
 	if (!cache) {
 		const char *query = "SELECT * FROM VerTodosLosInstrumentos";
-		char *result = EjecutarQueryEnJSON(query);
+		char *result = EjecutarQueryEnJSON(query, DB);
 		GuardarEnCache("instrumentos", result);
 		return ValidarResultado(result);
 	}
@@ -31,7 +31,7 @@ HTTP_response VerSoloUnInstrumento(const char *id) {
 	char *cache = BuscarEnCache(cache_query);
 	if (!cache) {
 		snprintf(query, sizeof(query), "SELECT * FROM VerTodosLosInstrumentos WHERE ID=%s", id);
-		char *result = EjecutarQueryEnJSON(query);
+		char *result = EjecutarQueryEnJSON(query, DB);
 		GuardarEnCache(cache_query, result);
 		return ValidarResultado(result);
 	}

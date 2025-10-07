@@ -10,7 +10,7 @@ HTTP_response VerSexos(const char *url) {
 	char *cache = BuscarEnCache("sexos");
 	if (!cache) {
 		const char *query = "SELECT * FROM VerSexos";
-		char *result = EjecutarQueryEnJSON(query);
+		char *result = EjecutarQueryEnJSON(query, DB);
 		GuardarEnCache("sexos", result);
 		return ValidarResultado(result);
 	}
