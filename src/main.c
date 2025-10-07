@@ -3,7 +3,7 @@
 #include <microhttpd.h>
 #include <unistd.h>
 #include <curl/curl.h>
-#include "../include/handler.h"
+#include "../include/route.h"
 
 #define PORT 8080
 
@@ -12,7 +12,7 @@ Funcion principal que abre un servidor pequeno usando LibmicroHTTP.
 El servidor corre desde un proceso externo, por lo que cada llamada
 usa su propio hilo en paralelo.
 
-(para mas info. vease la funcion "GestorPrincipal" en handler.c)
+(para mas info. vease la funcion "GestorPrincipal" en route.c)
 */
 int main() {
 	printf("Levantando Back-End de MatchaFunding...\n");

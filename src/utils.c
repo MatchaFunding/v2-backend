@@ -4,6 +4,12 @@
 #include <stdbool.h>
 #include "../include/utils.h"
 
+/*
+Funciones comunes para que las respuestas cumplan con el estandar HTTP
+Tambien existen funciones para facilitar la legibilidad del codigo, como
+las funciones para leer los metodos o rutas de las API.
+*/
+
 /* Envia un mensaje simple en formato HTTP */
 char *MensajeSimple(const char *message_str) {
 	char *formatted_message = NULL;

@@ -1,5 +1,5 @@
-#ifndef HANDLER_H
-#define HANDLER_H
+#ifndef ROUTE_H
+#define ROUTE_H
 
 #define POSTBUFFERSIZE 512
 #define MAXANSWERSIZE 512
