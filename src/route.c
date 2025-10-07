@@ -23,65 +23,75 @@ struct MHD_Response *CrearRespuestaHTTP(const char *message) {
 	return response;
 }
 
-/* Se usa la funcion "GestorPrincipal" para redirigir las
-llamadas en base al tipo de objeto que se esta invocando
-
-(es similar a los Routers en FastAPI) */
-enum MHD_Result GestorPrincipal
-	(void *cls, struct MHD_Connection *connection,
-	const char *url, const char *method,
-	const char *version, const char *upload_data,
-	size_t *upload_data_size, void **con_cls)
+/* Genera la respuesta al cliente a partir de la API */
+enum MHD_Result GenerarRespuesta
+	(struct MHD_Connection *conn, HTTP_response api) 
 {
-	// Prepara las variables de entrada y retorno
-	char *url_str = (char *)url;
-	char *method_str = (char *)method;
 	struct MHD_Response *response;
-	HTTP_response response_api;
 	int ret;
-	
-	// Muestra la llamada por pantalla
-	LoguearAPI(url_str, method_str);
-
-	// Redirigimos al controlador especifico de cada objeto
-	if (setjmp(ExceptionBuffer) == 0) {
-		if (strcmp(url_str, "/") == 0) {
-			response_api = (HTTP_response){
-				.body = MensajeSimple("BackEnd activo!"),
-				.status = OK
-			};
-		}
-		else if (EsRuta(url_str, "/instrumentos")) {
-			response_api = URLInstrumento(url_str, method_str, upload_data);
-		}
-		else if (EsRuta(url_str, "/sexos")) {
-			response_api = URLSexo(url_str, method_str, upload_data);
-		}
-		else {
-			response_api = (HTTP_response){
-				.body = MensajeSimple("Not found"),
-				.status = NOT_FOUND
-			};
-		}
-	}
-	
-	// La llamada realizada era invalida o no se pudo procesar
-	else {
-		response_api = (HTTP_response){
-			.body = MensajeSimple("Internal server error"),
-			.status = INTERNAL_SERVER_ERROR
-		};
-		printf("Internal server error");
-	}
 
 	// Se formatea la respuesta en formato HTTP
-	response = CrearRespuestaHTTP(response_api.body);
+	response = CrearRespuestaHTTP(api.body);
 	if (!response) {
 		return MHD_NO;
 	}
 
 	// Devuelve la respuesta procesada
-	ret = MHD_queue_response(connection, response_api.status, response);
+	ret = MHD_queue_response(conn, api.status, response);
 	MHD_destroy_response(response);
 	return ret;
+}
+
+/* Se usa la funcion "GestorPrincipal" para redirigir las
+llamadas en base al tipo de objeto que se esta invocando
+
+(es similar a los Routers en FastAPI) */
+enum MHD_Result GestorPrincipal
+	(void *cls, struct MHD_Connection *conn,
+	const char *url, const char *method,
+	const char *ver, const char *data,
+	size_t *data_size, void **con_cls)
+{
+	// Prepara las variables de entrada y retorno
+	HTTP_response api;
+
+	// Muestra la llamada por pantalla
+	LoguearAPI(url, method);
+
+	// Redirigimos al controlador especifico de cada objeto
+	// Se genera la respuesta tras llamar una API valida
+	if (setjmp(ExceptionBuffer) == 0) {
+		if (strcmp(url, "/") == 0) {
+			api = (HTTP_response){
+				.body = MensajeSimple("BackEnd activo!"),
+				.status = OK
+			};
+			return GenerarRespuesta(conn, api);
+		}
+		else if (EsRuta(url, "/instrumentos"))
+		{
+			api = URLInstrumento(url, method, data);
+			return GenerarRespuesta(conn, api);
+		}
+		else if (EsRuta(url, "/sexos"))
+		{
+			api = URLSexo(url, method, data);
+			return GenerarRespuesta(conn, api);
+		}
+		else {
+			api = (HTTP_response){
+				.body = MensajeSimple("Not found"),
+				.status = NOT_FOUND
+			};
+			return GenerarRespuesta(conn, api);
+		}
+	}
+	// La llamada realizada era invalida o no se pudo procesar
+	else {
+		api = (HTTP_response){
+			.body = MensajeSimple("Internal server error"),
+			.status = INTERNAL_SERVER_ERROR
+		};
+	}
+	return GenerarRespuesta(conn, api);
 }
