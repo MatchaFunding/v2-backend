@@ -1,10 +1,6 @@
 #ifndef ROUTE_H
 #define ROUTE_H
 
-#define POSTBUFFERSIZE 512
-#define MAXANSWERSIZE 512
-#define MAXNAMESIZE 20
-
 #define POST 1
 #define GET 0
 

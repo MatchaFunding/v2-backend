@@ -6,6 +6,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+/* Tamano maximo de los buffer para los POST requests */
+#define POSTBUFFERSIZE 8192
+
+/* Almacena los tipos de respuesta HTTP */
 typedef enum {
 	OK = 200,
 	BAD_REQUEST = 400,
@@ -14,10 +18,18 @@ typedef enum {
 	NOT_IMPLEMENTED = 501
 } HTTP_status;
 
+/* Almacena el cuerpo de las respuestas HTTP */
 typedef struct {
 	char *body;
 	HTTP_status status;
 } HTTP_response;
+
+/* Almacena la informacion de las llamadas entrantes */
+typedef struct {
+	struct MHD_PostProcessor *pp;
+	char *json_data;
+	size_t json_size;
+} connection_info_struct;
 
 char *MensajeSimple(const char *message_str);
 HTTP_response ValidarResultado(char *result);
