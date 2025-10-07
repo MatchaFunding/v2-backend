@@ -30,7 +30,7 @@ Para lograr compilar y ejecutar el programa, se necesita tener un entorno _UNIX_
 Para Arch Linux (o en el servidor), se pueden instalar las dependencias a traves del siguiente comando:
 
 ```
-pacman -S gcc mariadb libmicrohttpd redis cjson
+pacman -S gcc make mariadb libmicrohttpd redis hiredis cjson
 ```
 
 *Nota*: Correr el comando anterior con _sudo_ o desde _root_
