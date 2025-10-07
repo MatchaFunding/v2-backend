@@ -4,6 +4,14 @@
 #include <mysql/mysql.h>
 #include "../include/query.h"
 
+/*
+Se utiliza MySQL / MariaDB para almacenar los datos en disco duro.
+A medida que se agregan los datos estos se van guardando en cache
+para no abusar del disco duro
+
+(para mas info. vease las funciones en cache.c)
+*/
+
 /* Funcion que escapa todas las comillas dobles en un string */
 char *EscaparComillas(const char *input) {
 	if (!input) 
