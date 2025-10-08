@@ -14,7 +14,7 @@ struct Persona {
     char *FechaDeNacimiento;
 };
 
-struct connection_info_struct {
+struct ConnectionInfo {
     struct MHD_PostProcessor *pp;
     char *json_data;
     size_t json_size;
@@ -69,11 +69,11 @@ static enum MHD_Result answer_to_connection(void *cls, struct MHD_Connection *co
     if (strcmp(method, "POST") != 0)
         return send_response(connection, "Solo se permiten POST", MHD_HTTP_METHOD_NOT_ALLOWED);
 
-    struct connection_info_struct *con_info = *req_cls;
+    struct ConnectionInfo *con_info = *req_cls;
 
     // Primera vez que entra
     if (!con_info) {
-        con_info = calloc(1, sizeof(struct connection_info_struct));
+        con_info = calloc(1, sizeof(struct ConnectionInfo));
         con_info->json_data = malloc(POSTBUFFERSIZE);
         con_info->json_data[0] = '\0';
         con_info->json_size = 0;

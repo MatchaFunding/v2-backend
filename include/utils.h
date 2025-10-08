@@ -30,7 +30,7 @@ typedef struct {
 	struct MHD_PostProcessor *pp;
 	char *json_data;
 	size_t json_size;
-} connection_info_struct;
+} ConnectionInfo;
 
 char *MensajeSimple(const char *message_str);
 struct MHD_Response *CrearRespuesta(const char *message);

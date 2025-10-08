@@ -16,15 +16,13 @@ void LoguearAPI(const char *url, const char *method) {
 llamadas en base al tipo de objeto que se esta invocando
 
 (es similar a los Routers en FastAPI) */
-enum MHD_Result GestorPrincipal
-	(void *cls, struct MHD_Connection *conn,
+enum MHD_Result GestorPrincipal (
+	void *cls, struct MHD_Connection *conn,
 	const char *url, const char *method,
 	const char *ver, const char *data,
-	size_t *data_size, void **con_cls)
+	size_t *data_size, void **con_cls
+)
 {
-	// Prepara las variables de entrada y retorno
-	//HTTP_response api;
-
 	// Muestra la llamada por pantalla
 	LoguearAPI(url, method);
 
@@ -36,7 +34,10 @@ enum MHD_Result GestorPrincipal
 			return SendResponse(conn, msg, OK);
 		}
 		else if (EsRuta(url, "/sexos")) {
-			return URLSexo(cls, conn, url, method, ver, data, data_size, con_cls);
+			return URLSexo (
+				cls, conn, url, method,
+				ver, data, data_size, con_cls
+			);
 		}
 		else {
 			char *msg = MensajeSimple("Not found");

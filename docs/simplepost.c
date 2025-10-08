@@ -26,7 +26,7 @@
 #define GET             0
 #define POST            1
 
-struct connection_info_struct
+struct ConnectionInfo
 {
   int connectiontype;
   char *answerstring;
@@ -72,7 +72,7 @@ iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char *key,
               const char *transfer_encoding, const char *data, uint64_t off,
               size_t size)
 {
-  struct connection_info_struct *con_info = coninfo_cls;
+  struct ConnectionInfo *con_info = coninfo_cls;
   (void) kind;               /* Unused. Silent compiler warning. */
   (void) filename;           /* Unused. Silent compiler warning. */
   (void) content_type;       /* Unused. Silent compiler warning. */
@@ -109,7 +109,7 @@ static void
 request_completed (void *cls, struct MHD_Connection *connection,
                    void **req_cls, enum MHD_RequestTerminationCode toe)
 {
-  struct connection_info_struct *con_info = *req_cls;
+  struct ConnectionInfo *con_info = *req_cls;
   (void) cls;         /* Unused. Silent compiler warning. */
   (void) connection;  /* Unused. Silent compiler warning. */
   (void) toe;         /* Unused. Silent compiler warning. */
@@ -141,9 +141,9 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
 
   if (NULL == *req_cls)
   {
-    struct connection_info_struct *con_info;
+    struct ConnectionInfo *con_info;
 
-    con_info = malloc (sizeof (struct connection_info_struct));
+    con_info = malloc (sizeof (struct ConnectionInfo));
     if (NULL == con_info)
       return MHD_NO;
     con_info->answerstring = NULL;
@@ -177,7 +177,7 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
 
   if (0 == strcmp (method, "POST"))
   {
-    struct connection_info_struct *con_info = *req_cls;
+    struct ConnectionInfo *con_info = *req_cls;
 
     if (*upload_data_size != 0)
     {

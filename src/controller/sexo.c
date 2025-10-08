@@ -50,18 +50,18 @@ enum MHD_Result URLSexo
 	const char *ver, const char *data,
 	size_t *data_size, void **con_cls)
 {
-	/* Este metodo se invoca para leer datos desde el cliente */
+	// Este metodo se invoca para leer datos desde el cliente
 	if (EsMetodo(method, "GET")) {
 		const char *query = "SELECT * FROM VerSexos";
 		char *result = EjecutarQueryEnJSON(query, DB);
 		return SendResponse(conn, result, MHD_HTTP_OK);
 	}
-	/* Este metodo se invoca para crear datos a partir de lo que envia el cliente */
+	// Este metodo se invoca para crear datos a partir de lo que envia el cliente
 	if (EsMetodo(method, "POST")) {
-		connection_info_struct *con_info = *con_cls;
+		ConnectionInfo *con_info = *con_cls;
 		// Primera vez que entra
 		if (!con_info) {
-			con_info = calloc(1, sizeof(connection_info_struct));
+			con_info = calloc(1, sizeof(ConnectionInfo));
 			con_info->json_data = malloc(POSTBUFFERSIZE);
 			con_info->json_data[0] = '\0';
 			con_info->json_size = 0;
@@ -85,7 +85,7 @@ enum MHD_Result URLSexo
 			free(con_info);
 			*con_cls = NULL;
 			if (res == MHD_YES)
-				return SendResponse(conn, "Persona procesada correctamente\n", MHD_HTTP_OK);
+				return SendResponse(conn, "Persona procesada\n", MHD_HTTP_OK);
 		}
 	}
 	return SendResponse(conn, "Llamada invalida!\n", MHD_HTTP_BAD_REQUEST);
