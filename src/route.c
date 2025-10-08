@@ -31,7 +31,7 @@ enum MHD_Result GestorPrincipal (
 	if (setjmp(ExceptionBuffer) == 0) {
 		if (strcmp(url, "/") == 0) {
 			char *msg = MensajeSimple("BackEnd activo!");
-			return SendResponse(conn, msg, OK);
+			return CrearRespuesta(conn, msg, OK);
 		}
 		else if (EsRuta(url, "/sexos")) {
 			return URLSexo (
@@ -41,11 +41,11 @@ enum MHD_Result GestorPrincipal (
 		}
 		else {
 			char *msg = MensajeSimple("Not found");
-			return SendResponse(conn, msg, NOT_FOUND);
+			return CrearRespuesta(conn, msg, NOT_FOUND);
 		}
 	}
 	// La llamada realizada era invalida o no se pudo procesar
 	char *msg = MensajeSimple("Error");
 	unsigned int err = INTERNAL_SERVER_ERROR;
-	return SendResponse(conn, msg, err);
+	return CrearRespuesta(conn, msg, err);
 }

@@ -54,7 +54,7 @@ enum MHD_Result URLSexo
 	if (EsMetodo(method, "GET")) {
 		const char *query = "SELECT * FROM VerSexos";
 		char *result = EjecutarQueryEnJSON(query, DB);
-		return SendResponse(conn, result, MHD_HTTP_OK);
+		return CrearRespuesta(conn, result, MHD_HTTP_OK);
 	}
 	// Este metodo se invoca para crear datos a partir de lo que envia el cliente
 	if (EsMetodo(method, "POST")) {
@@ -85,8 +85,8 @@ enum MHD_Result URLSexo
 			free(con_info);
 			*con_cls = NULL;
 			if (res == MHD_YES)
-				return SendResponse(conn, "Persona procesada\n", MHD_HTTP_OK);
+				return CrearRespuesta(conn, "Persona procesada\n", MHD_HTTP_OK);
 		}
 	}
-	return SendResponse(conn, "Llamada invalida!\n", MHD_HTTP_BAD_REQUEST);
+	return CrearRespuesta(conn, "Llamada invalida!\n", MHD_HTTP_BAD_REQUEST);
 }

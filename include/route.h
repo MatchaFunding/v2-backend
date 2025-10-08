@@ -7,7 +7,6 @@
 #include <setjmp.h>
 
 void LoguearAPI(const char *url, const char *method);
-struct MHD_Response *CrearRespuesta(const char *message);
 enum MHD_Result GestorPrincipal
 	(void *cls, struct MHD_Connection *conn,
 	const char *url, const char *method,
