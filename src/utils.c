@@ -48,6 +48,16 @@ enum MHD_Result CrearResultado(struct MHD_Connection *conn, HTTP_response api) {
 	return ret;
 }
 
+/* Función auxiliar para enviar una respuesta HTTP */
+enum MHD_Result SendResponse(struct MHD_Connection *con, const char *msg, unsigned int status) {
+	struct MHD_Response *res = MHD_create_response_from_buffer(strlen(msg), (void *)msg, MHD_RESPMEM_PERSISTENT);
+	MHD_add_response_header(res, "Content-Type", "application/json");
+	MHD_add_response_header(res, "Access-Control-Allow-Origin", "*");
+    enum MHD_Result ret = MHD_queue_response(con, status, res);
+    MHD_destroy_response(res);
+    return ret;
+}
+
 /* Valida si la ruta existe y es valida */
 bool EsRuta(const char *url, char *route) {
 	return strstr(url, route) != NULL;

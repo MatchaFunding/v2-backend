@@ -23,7 +23,7 @@ enum MHD_Result GestorPrincipal
 	size_t *data_size, void **con_cls)
 {
 	// Prepara las variables de entrada y retorno
-	HTTP_response api;
+	//HTTP_response api;
 
 	// Muestra la llamada por pantalla
 	LoguearAPI(url, method);
@@ -32,31 +32,19 @@ enum MHD_Result GestorPrincipal
 	// Se genera la respuesta tras llamar una API valida
 	if (setjmp(ExceptionBuffer) == 0) {
 		if (strcmp(url, "/") == 0) {
-			api = (HTTP_response){
-				.body = MensajeSimple("BackEnd activo!"),
-				.status = OK
-			};
-			return CrearResultado(conn, api);
+			char *msg = MensajeSimple("BackEnd activo!");
+			return SendResponse(conn, msg, OK);
 		}
 		else if (EsRuta(url, "/sexos")) {
-			return URLSexo
-				(cls, conn, url, method,
-				ver, data, data_size, con_cls);
+			return URLSexo(cls, conn, url, method, ver, data, data_size, con_cls);
 		}
 		else {
-			api = (HTTP_response){
-				.body = MensajeSimple("Not found"),
-				.status = NOT_FOUND
-			};
-			return CrearResultado(conn, api);
+			char *msg = MensajeSimple("Not found");
+			return SendResponse(conn, msg, NOT_FOUND);
 		}
 	}
 	// La llamada realizada era invalida o no se pudo procesar
-	else {
-		api = (HTTP_response){
-			.body = MensajeSimple("Internal server error"),
-			.status = INTERNAL_SERVER_ERROR
-		};
-	}
-	return CrearResultado(conn, api);
+	char *msg = MensajeSimple("Error");
+	unsigned int err = INTERNAL_SERVER_ERROR;
+	return SendResponse(conn, msg, err);
 }
