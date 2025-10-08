@@ -15,10 +15,12 @@ struct Persona {
 };
 
 // Función auxiliar para enviar una respuesta HTTP
-static enum MHD_Result send_response(struct MHD_Connection *connection, const char *msg, unsigned int status) {
-    struct MHD_Response *response = MHD_create_response_from_buffer(strlen(msg), (void *)msg, MHD_RESPMEM_PERSISTENT);
-    enum MHD_Result ret = MHD_queue_response(connection, status, response);
-    MHD_destroy_response(response);
+static enum MHD_Result SendResponse(struct MHD_Connection *con, const char *msg, unsigned int status) {
+	struct MHD_Response *res = MHD_create_response_from_buffer(strlen(msg), (void *)msg, MHD_RESPMEM_PERSISTENT);
+	MHD_add_response_header(res, "Content-Type", "application/json");
+	MHD_add_response_header(res, "Access-Control-Allow-Origin", "*");
+    enum MHD_Result ret = MHD_queue_response(con, status, res);
+    MHD_destroy_response(res);
     return ret;
 }
 
@@ -59,13 +61,13 @@ enum MHD_Result URLSexo
 	size_t *data_size, void **con_cls)
 {
 	/* Este metodo se invoca para leer datos desde el cliente */
-	if (strcmp(method, "GET") == 0) {
+	if (EsMetodo(method, "GET")) {
 		const char *query = "SELECT * FROM VerSexos";
 		char *result = EjecutarQueryEnJSON(query, DB);
-		return send_response(conn, result, MHD_HTTP_OK);
+		return SendResponse(conn, result, MHD_HTTP_OK);
 	}
 	/* Este metodo se invoca para crear datos a partir de lo que envia el cliente */
-	if (strcmp(method, "POST") == 0) {
+	if (EsMetodo(method, "POST")) {
 		connection_info_struct *con_info = *con_cls;
 		// Primera vez que entra
 		if (!con_info) {
@@ -93,8 +95,8 @@ enum MHD_Result URLSexo
 			free(con_info);
 			*con_cls = NULL;
 			if (res == MHD_YES)
-				return send_response(conn, "Persona procesada correctamente\n", MHD_HTTP_OK);
+				return SendResponse(conn, "Persona procesada correctamente\n", MHD_HTTP_OK);
 		}
 	}
-	return send_response(conn, "Llamada invalida!\n", MHD_HTTP_BAD_REQUEST);
+	return SendResponse(conn, "Llamada invalida!\n", MHD_HTTP_BAD_REQUEST);
 }
