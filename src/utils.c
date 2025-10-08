@@ -20,6 +20,34 @@ char *MensajeSimple(const char *message_str) {
 	return formatted_message;
 }
 
+/* Construye la respuesta en formato HTTP */
+struct MHD_Response *CrearRespuesta(const char *message) {
+	struct MHD_Response *response;
+	response = MHD_create_response_from_buffer(strlen(message), (void *)message, MHD_RESPMEM_PERSISTENT);
+	if (!response)
+		return NULL;
+	MHD_add_response_header(response, "Content-Type", "application/json");
+	MHD_add_response_header(response, "Access-Control-Allow-Origin", "*");
+	return response;
+}
+
+/* Construye el resultado en formato HTTP */
+enum MHD_Result CrearResultado(struct MHD_Connection *conn, HTTP_response api) {
+	struct MHD_Response *response;
+	int ret;
+
+	// Se formatea la respuesta en formato HTTP
+	response = CrearRespuesta(api.body);
+	if (!response) {
+		return MHD_NO;
+	}
+
+	// Devuelve la respuesta procesada
+	ret = MHD_queue_response(conn, api.status, response);
+	MHD_destroy_response(response);
+	return ret;
+}
+
 /* Valida si la ruta existe y es valida */
 bool EsRuta(const char *url, char *route) {
 	return strstr(url, route) != NULL;

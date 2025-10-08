@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <microhttpd.h>
 
 /* Tamano maximo de los buffer para los POST requests */
 #define POSTBUFFERSIZE 8192
@@ -32,6 +33,8 @@ typedef struct {
 } connection_info_struct;
 
 char *MensajeSimple(const char *message_str);
+struct MHD_Response *CrearRespuesta(const char *message);
+enum MHD_Result CrearResultado(struct MHD_Connection *conn, HTTP_response api);
 HTTP_response ValidarResultado(char *result);
 bool EsMetodo(const char *method, char *valid_method);
 bool EsRuta(const char *url, char *route);
