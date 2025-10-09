@@ -3,8 +3,9 @@
 
 #include "utils.h"
 
-HTTP_response VerTodosLosProyectos(const char *url);
-HTTP_response VerSoloUnProyecto(const char *id);
-HTTP_response URLProyecto(const char *url, const char *method, const char *body);
+char* VerTodosLosProyectos(const char *url);
+char* VerSoloUnProyecto(const char *id);
+enum MHD_Result URLProyecto
+(const char *url, const char *method, struct MHD_Connection *conn);
 
 #endif

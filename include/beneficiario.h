@@ -3,8 +3,9 @@
 
 #include "utils.h"
 
-HTTP_response VerTodosLosBeneficiarios(const char *url);
-HTTP_response VerSoloUnBeneficiario(const char *id);
-HTTP_response URLBeneficiario(const char *url, const char *method, const char *body);
+char* VerTodosLosBeneficiarios(const char *url);
+char* VerSoloUnBeneficiario(const char *id);
+enum MHD_Result URLBeneficiario
+(const char *url, const char *method, struct MHD_Connection *conn);
 
 #endif

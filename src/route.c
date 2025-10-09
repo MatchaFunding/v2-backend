@@ -3,6 +3,8 @@
 #include <setjmp.h>
 #include "../include/route.h"
 #include "../include/instrumento.h"
+#include "../include/beneficiario.h"
+#include "../include/proyecto.h"
 //#include "../include/sexo.h"
 
 jmp_buf ExceptionBuffer;
@@ -36,14 +38,12 @@ enum MHD_Result GestorPrincipal (
 		else if (EsRuta(url, "/instrumentos")) {
 			return URLInstrumento(url, method, conn);
 		}
-		/*
-		else if (EsRuta(url, "/sexos")) {
-			return URLSexo (
-				cls, conn, url, method,
-				ver, data, data_size, con_cls
-			);
+		else if (EsRuta(url, "/beneficiarios")) {
+			return URLBeneficiario(url, method, conn);
 		}
-			*/
+		else if (EsRuta(url, "/proyectos")) {
+			return URLProyecto(url, method, conn);
+		}
 		else {
 			char *msg = MensajeSimple("Not found");
 			return CrearRespuesta(conn, msg, NOT_FOUND);
