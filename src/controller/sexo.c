@@ -51,13 +51,13 @@ enum MHD_Result URLSexo
 	size_t *data_size, void **con_cls)
 {
 	// Este metodo se invoca para leer datos desde el cliente
-	if (EsMetodo(method, "GET")) {
+	if (strcmp(method, "GET") == 0) {
 		const char *query = "SELECT * FROM VerSexos";
 		char *result = EjecutarQueryEnJSON(query, DB);
 		return CrearRespuesta(conn, result, MHD_HTTP_OK);
 	}
 	// Este metodo se invoca para crear datos a partir de lo que envia el cliente
-	if (EsMetodo(method, "POST")) {
+	if (strcmp(method, "POST") == 0) {
 		ConnectionInfo *con_info = *con_cls;
 		// Primera vez que entra
 		if (!con_info) {

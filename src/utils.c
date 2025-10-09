@@ -30,16 +30,6 @@ enum MHD_Result CrearRespuesta(struct MHD_Connection *con, const char *msg, unsi
     return ret;
 }
 
-/* Valida si la ruta existe y es valida */
-bool EsRuta(const char *url, char *route) {
-	return strstr(url, route) != NULL;
-}
-
-/* Valida si el metodo existe y es valido */
-bool EsMetodo(const char *method, char *valid_method) {
-	return strcmp(method, valid_method) == 0;
-}
-
 /* Valida el resultado y devuelve una respuesta HTTP */
 HTTP_response ValidarResultado(char *result) {
 	if (result == NULL) {

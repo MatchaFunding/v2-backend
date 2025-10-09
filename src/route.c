@@ -35,13 +35,13 @@ enum MHD_Result GestorPrincipal (
 			char *msg = MensajeSimple("BackEnd activo!");
 			return CrearRespuesta(conn, msg, OK);
 		}
-		else if (EsRuta(url, "/instrumentos")) {
+		else if (strcmp(url, "/instrumentos") == 0) {
 			return URLInstrumento(url, method, conn);
 		}
-		else if (EsRuta(url, "/beneficiarios")) {
+		else if (strcmp(url, "/beneficiarios") == 0) {
 			return URLBeneficiario(url, method, conn);
 		}
-		else if (EsRuta(url, "/proyectos")) {
+		else if (strcmp(url, "/proyectos") == 0) {
 			return URLProyecto(url, method, conn);
 		}
 		else {

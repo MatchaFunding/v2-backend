@@ -16,18 +16,3 @@ char* VerTodosLosProyectos(const char *url) {
 	}
 	return cache;
 }
-
-/* Muestra solo un instrumento en base a su identificador */
-char* VerSoloUnProyecto(const char *id) {
-	char cache_query[64];
-	char query[64];
-	snprintf(cache_query, sizeof(cache_query), "proyecto:%s", id);
-	char *cache = BuscarEnCache(cache_query);
-	if (!cache) {
-		snprintf(query, sizeof(query), "SELECT * FROM VerTodosLosProyectos WHERE ID=%s", id);
-		char *result = EjecutarQueryEnJSON(query, DB);
-		GuardarEnCache(cache_query, result);
-		return result;
-	}
-	return cache;
-}
