@@ -35,19 +35,17 @@ enum MHD_Result GestorPrincipal (
 			char *msg = MensajeSimple("BackEnd activo!");
 			return CrearRespuesta(conn, msg, OK);
 		}
-		else if (strcmp(url, "/instrumentos") == 0) {
+		if (strcmp(url, "/instrumentos") == 0) {
 			return URLInstrumento(url, method, conn);
 		}
-		else if (strcmp(url, "/beneficiarios") == 0) {
+		if (strcmp(url, "/beneficiarios") == 0) {
 			return URLBeneficiario(url, method, conn);
 		}
-		else if (strcmp(url, "/proyectos") == 0) {
+		if (strcmp(url, "/proyectos") == 0) {
 			return URLProyecto(url, method, conn);
 		}
-		else {
-			char *msg = MensajeSimple("Not found");
-			return CrearRespuesta(conn, msg, NOT_FOUND);
-		}
+		char *msg = MensajeSimple("Not found");
+		return CrearRespuesta(conn, msg, NOT_FOUND);
 	}
 	// La llamada realizada era invalida o no se pudo procesar
 	char *msg = MensajeSimple("Error");
