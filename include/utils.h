@@ -35,7 +35,5 @@ typedef struct {
 char *MensajeSimple(const char *message_str);
 enum MHD_Result CrearRespuesta(struct MHD_Connection *con, const char *msg, unsigned int status);
 HTTP_response ValidarResultado(char *result);
-bool EsMetodo(const char *method, char *valid_method);
-bool EsRuta(const char *url, char *route);
 
 #endif
