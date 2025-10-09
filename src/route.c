@@ -2,8 +2,8 @@
 #include <microhttpd.h>
 #include <setjmp.h>
 #include "../include/route.h"
-
-#include "../include/sexo.h"
+#include "../include/instrumento.h"
+//#include "../include/sexo.h"
 
 jmp_buf ExceptionBuffer;
 
@@ -33,12 +33,17 @@ enum MHD_Result GestorPrincipal (
 			char *msg = MensajeSimple("BackEnd activo!");
 			return CrearRespuesta(conn, msg, OK);
 		}
+		else if (EsRuta(url, "/instrumentos")) {
+			return URLInstrumento(url, method, conn);
+		}
+		/*
 		else if (EsRuta(url, "/sexos")) {
 			return URLSexo (
 				cls, conn, url, method,
 				ver, data, data_size, con_cls
 			);
 		}
+			*/
 		else {
 			char *msg = MensajeSimple("Not found");
 			return CrearRespuesta(conn, msg, NOT_FOUND);

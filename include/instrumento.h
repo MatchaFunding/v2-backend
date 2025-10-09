@@ -3,8 +3,9 @@
 
 #include "utils.h"
 
-HTTP_response VerTodosLosInstrumentos(const char *url);
-HTTP_response VerSoloUnInstrumento(const char *id);
-HTTP_response URLInstrumento(const char *url, const char *method, const char *body);
+char* VerTodosLosInstrumentos(const char *url);
+char* VerSoloUnInstrumento(const char *id);
+enum MHD_Result URLInstrumento
+(const char *url, const char *method, struct MHD_Connection *conn);
 
 #endif
