@@ -10,10 +10,7 @@
 // Base de datos historicos y publicos
 #define DB "MatchaFundingMySQL"
 
-// Base de datos privados de los usuarios
-#define USER_DB "MatchaDrinkersMySQL"
-
-char *EjecutarQueryEnJSON(const char *query, const char *db);
+char *EjecutarQueryEnJSON(const char *query);
 char *ParsearResultadoEnJSON(MYSQL_RES *result);
 
 #endif

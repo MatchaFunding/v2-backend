@@ -10,7 +10,7 @@ char* VerTodosLosInstrumentos(const char *url) {
 	char *cache = BuscarEnCache("instrumentos");
 	if (!cache) {
 		const char *query = "SELECT * FROM VerTodosLosInstrumentos";
-		char *result = EjecutarQueryEnJSON(query, DB);
+		char *result = EjecutarQueryEnJSON(query);
 		GuardarEnCache("instrumentos", result);
 		return result;
 	}

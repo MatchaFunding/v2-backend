@@ -7,6 +7,7 @@
 #include "../../include/cache.h"
 #include "../../include/sexo.h"
 
+/*
 struct Persona {
     char *Nombre;
     char *Sexo;
@@ -42,8 +43,7 @@ static enum MHD_Result handle_json_data(const char *data) {
     cJSON_Delete(json);
     return MHD_YES;
 }
-
-/* Gestiona y enruta las llamadas hacia los instrumentos */
+// Gestiona y enruta las llamadas hacia los instrumentos
 enum MHD_Result URLSexo
 	(void *cls, struct MHD_Connection *conn,
 	const char *url, const char *method,
@@ -90,3 +90,4 @@ enum MHD_Result URLSexo
 	}
 	return CrearRespuesta(conn, "Llamada invalida!\n", MHD_HTTP_BAD_REQUEST);
 }
+*/

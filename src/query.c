@@ -38,13 +38,13 @@ char *EscaparComillas(const char *input) {
 }
 
 /* Realiza la query en MySQL y devuelve la respuesta en JSON */
-char *EjecutarQueryEnJSON(const char *query, const char *db) {
+char *EjecutarQueryEnJSON(const char *query) {
 	MYSQL *con = mysql_init(NULL);
 	if (con == NULL) {
 		fprintf(stderr, "Couldn't initialize database\n");
 		return NULL;
 	}
-	if (mysql_real_connect(con, MYSQL_HOST, MYSQL_USER, NULL, db, 0, NULL, 0) == NULL) {
+	if (mysql_real_connect(con, MYSQL_HOST, MYSQL_USER, NULL, DB, 0, NULL, 0) == NULL) {
 		fprintf(stderr, "Couldn't connect to database\n");
 		return NULL;
 	}
