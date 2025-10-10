@@ -3,14 +3,14 @@
 #include <stdbool.h>
 #include <microhttpd.h>
 #include "../../include/utils.h"
-#include "../../include/sexo.h"
+#include "../../include/resultado.h"
 
 /* Gestiona y enruta las llamadas hacia los instrumentos */
-enum MHD_Result URLSexo
+enum MHD_Result URLResultado
 (const char *url, const char *method, struct MHD_Connection *conn)
 {
 	if (strcmp(method, "GET") == 0) {
-		char* result = VerSexos(url);
+		char* result = VerResultados(url);
 		return CrearRespuesta(conn, result, MHD_HTTP_OK);
 	}
 	char *msg = "Llamada invalida!";

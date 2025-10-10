@@ -4,9 +4,14 @@
 #include "../include/route.h"
 #include "../include/instrumento.h"
 #include "../include/beneficiario.h"
+#include "../include/financiador.h"
 #include "../include/proyecto.h"
+#include "../include/postulacion.h"
+#include "../include/miembro.h"
+#include "../include/colaborador.h"
+#include "../include/resultado.h"
 #include "../include/persona.h"
-//#include "../include/sexo.h"
+#include "../include/sexo.h"
 
 jmp_buf ExceptionBuffer;
 
@@ -42,11 +47,29 @@ enum MHD_Result GestorPrincipal (
 		if (strcmp(url, "/beneficiarios") == 0) {
 			return URLBeneficiario(url, method, conn);
 		}
+		if (strcmp(url, "/financiadores") == 0) {
+			return URLFinanciador(url, method, conn);
+		}
 		if (strcmp(url, "/proyectos") == 0) {
 			return URLProyecto(url, method, conn);
 		}
+		if (strcmp(url, "/postulaciones") == 0) {
+			return URLPostulacion(url, method, conn);
+		}
+		if (strcmp(url, "/miembros") == 0) {
+			return URLMiembro(url, method, conn);
+		}
+		if (strcmp(url, "/colaboradores") == 0) {
+			return URLColaborador(url, method, conn);
+		}
+		if (strcmp(url, "/resultados") == 0) {
+			return URLResultado(url, method, conn);
+		}
 		if (strcmp(url, "/personas") == 0) {
 			return URLPersona(url, method, conn);
+		}
+		if (strcmp(url, "/sexos") == 0) {
+			return URLSexo(url, method, conn);
 		}
 		char *msg = MensajeSimple("Not found");
 		return CrearRespuesta(conn, msg, NOT_FOUND);

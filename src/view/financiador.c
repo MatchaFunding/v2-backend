@@ -3,15 +3,15 @@
 #include <stdbool.h>
 #include "../../include/query.h"
 #include "../../include/cache.h"
-#include "../../include/sexo.h"
+#include "../../include/financiador.h"
 
 /* Muestra absolutamente todos los instrumentos existentes */
-char* VerSexos(const char *url) {
-	char *cache = BuscarEnCache("sexos");
+char* VerTodosLosFinanciadores(const char *url) {
+	char *cache = BuscarEnCache("financiadores");
 	if (!cache) {
-		const char *query = "SELECT * FROM VerSexos";
+		const char *query = "SELECT * FROM VerTodosLosFinanciadores";
 		char *result = EjecutarQueryEnJSON(query);
-		GuardarEnCache("sexo", result);
+		GuardarEnCache("financiadores", result);
 		return result;
 	}
 	return cache;
