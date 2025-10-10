@@ -5,6 +5,7 @@
 #include "../include/instrumento.h"
 #include "../include/beneficiario.h"
 #include "../include/proyecto.h"
+#include "../include/persona.h"
 //#include "../include/sexo.h"
 
 jmp_buf ExceptionBuffer;
@@ -43,6 +44,9 @@ enum MHD_Result GestorPrincipal (
 		}
 		if (strcmp(url, "/proyectos") == 0) {
 			return URLProyecto(url, method, conn);
+		}
+		if (strcmp(url, "/personas") == 0) {
+			return URLPersona(url, method, conn);
 		}
 		char *msg = MensajeSimple("Not found");
 		return CrearRespuesta(conn, msg, NOT_FOUND);
